@@ -37,6 +37,8 @@ def ReLU(x):
 def ReLU_prime(x):
     return np.where(x == 0, 0.5, x)
 
+# softmax function rewrite taken from stackoverflow
+# https://stackoverflow.com/questions/34968722/how-to-implement-the-softmax-function-in-python
 def softmax(x):
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum()
