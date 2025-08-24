@@ -31,23 +31,24 @@ def load_data(folder):
 
     return training, test
 
-def ReLU(x):
+def ReLU(x: np.ndarray) -> np.ndarray:
     return np.maximum(0, x)
 
-def ReLU_prime(x):
-    return np.where(x == 0, 0.5, x)
+def ReLU_prime(x: np.ndarray) -> np.ndarray:
+    return x > 0
 
-# softmax function rewrite taken from stackoverflow
-# https://stackoverflow.com/questions/34968722/how-to-implement-the-softmax-function-in-python
-def softmax(x):
-    e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum()
+# sigmoid is used for binary classification
+# https://www.geeksforgeeks.org/deep-learning/softmax-vs-sigmoid-activation-function/
+def sigmoid(x: np.ndarray) -> np.ndarray:
+    return 1 / (1 + np.exp(-x))
 
-def softmax_prime(x):
-    pass
+def sigmoid_prime(x: np.ndarray) -> np.ndarray:
+    e_x = np.exp(-x)
+    return e_x / (1 + e_x)**2
 
 class Layer:
-    def __init__(self, weight_shape, activation, derivative):
+    def __init__(self, weight_shape: tuple, activation: callable, derivative: callable):
+        self.z = np.zeros((weight_shape[0], 1)) # helper matrix for backprop
         self.values = np.ones((weight_shape[0], 1))
         self.bias = np.zeros((weight_shape[0], 1))
         self.weights = np.random.rand(weight_shape[0], weight_shape[1])
